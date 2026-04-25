@@ -1,19 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const mysql = require('mysql');
 
-const app = express();
-const port = 3000;
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente 🚀');
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'inventario_tienda'
 });
 
-const productosRoutes = require('./routes/productos');
-app.use('/api', productosRoutes);
-
-app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
+connection.connect(err => {
+    if (err) {
+        console.error('Error de conexión:', err);
+        return;
+    }
+    console.log('Conectado a MySQL');
 });
+
+module.exports = connection;
